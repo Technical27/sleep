@@ -1,0 +1,12 @@
+name: sleep
+version: 0.0.69
+author: Technical27
+main: io.github.technical27.sleep.plugin.Plugin
+api-version: 1.17
+softdepend:
+  - afk
+# commands:
+#   afk:
+#     description: enable afk
+#     usage: /<command>
+#     permission: afk.command
