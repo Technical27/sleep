@@ -5,3 +5,6 @@
 (def needed (atom 0))
 
 (def in-animation (atom false))
+
+(def afk-plugin (atom nil))
+(def plugin (atom nil))

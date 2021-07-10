@@ -1,10 +1,11 @@
 (ns io.github.technical27.sleep.messages
   (:import [org.bukkit ChatColor])
-  (:require [io.github.technical27.sleep.state :as state]))
+  (:require [io.github.technical27.sleep.state :as state]
+            [io.github.technical27.sleep.util :as util]))
 
 (defn- format-sleeping
   []
-  (str @state/sleeping "/" @state/needed))
+  (str @state/sleeping "/" (util/get-needed @state/needed)))
 
 (defn- msg
   [player m]

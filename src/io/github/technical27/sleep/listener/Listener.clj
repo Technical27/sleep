@@ -18,9 +18,12 @@
 (defn- update-sleep
   [event fun]
   (when (and (util/is-night?) (not @state/in-animation))
-    (status/update-needed)
     (Bukkit/broadcastMessage (fun (.getPlayer event)))
     (status/do-sleep)))
+
+(defn- is-anyone-sleeping?
+  []
+  (> @state/sleeping 0))
 
 (defn- check-bed-enter
   [event]
@@ -39,20 +42,35 @@
 
 (defn -onKick
   [_ event]
-  (when (> @state/sleeping 0)
+  (when (util/can-sleep? (.getPlayer event))
+    (swap! state/needed dec))
+  (when (is-anyone-sleeping?)
     (update-sleep event messages/player-leave)))
 
 (defn -onLeave
   [_ event]
-  (when (> @state/sleeping 0)
+  (when (util/can-sleep? (.getPlayer event))
+    (swap! state/needed dec))
+  (when (is-anyone-sleeping?)
     (update-sleep event messages/player-leave)))
 
 (defn -onJoin
   [_ event]
-  (when (> @state/sleeping 0)
+  (when (util/can-sleep? (.getPlayer event))
+    (swap! state/needed inc))
+  (when (is-anyone-sleeping?)
     (update-sleep event messages/player-join)))
 
+; NOTE: i hate this but this was the most sane way i could do this
 (defn -onPortal
   [_ event]
-  (when (> @state/sleeping 0)
+  (let [old-world (.getWorld (.getFrom event))
+        new-world (.getWorld (.getTo event))
+        is-overworld-old (util/is-overworld? old-world)
+        is-overworld-new (util/is-overworld? new-world)]
+    (when (and is-overworld-old (not is-overworld-new))
+      (swap! state/needed dec))
+    (when (and (not is-overworld-old) is-overworld-new)
+      (swap! state/needed inc)))
+  (when (is-anyone-sleeping?)
     (update-sleep event messages/player-portal)))
