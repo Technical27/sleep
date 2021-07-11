@@ -4,4 +4,5 @@ author: Technical27
 main: io.github.technical27.sleep.plugin.Plugin
 api-version: 1.17
 softdepend:
+  - ProtocolLib
   - afk

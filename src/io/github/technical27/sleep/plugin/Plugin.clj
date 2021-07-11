@@ -2,7 +2,8 @@
   (:gen-class
    :main false
    :extends io.github.technical27.sleep.plugin.ClojurePlugin)
-  (:require [io.github.technical27.sleep.state :as state])
+  (:require [io.github.technical27.sleep.state :as state]
+            [io.github.technical27.sleep.protocol :as protocol])
   (:import [io.github.technical27.sleep.listener Listener]))
 
 (defn -onEnable
@@ -10,8 +11,10 @@
   (println "sleep: enable")
   (let [plugin-manager (.getPluginManager (.getServer this))]
     (.registerEvents plugin-manager (Listener.) this)
-    (reset! state/afk-plugin (.getPlugin plugin-manager "afk"))
-    (reset! state/plugin this)))
+    (reset! state/plugin this)
+    (when-let [adapter (protocol/adapter this)]
+      (.addPacketListener (com.comphenix.protocol.ProtocolLibrary/getProtocolManager) adapter))
+    (reset! state/afk-plugin (.getPlugin plugin-manager "afk"))))
 
 (defn -onDisable
   [_]
