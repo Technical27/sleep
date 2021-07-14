@@ -9,11 +9,11 @@
   :target-path "target/%s"
   :repositories [["spigot-repo" "https://hub.spigotmc.org/nexus/content/repositories/snapshots/"]
                  ["protocollib-repo" "https://repo.dmulloy2.net/repository/public/"]
-                 ["local" "file:///home/aamaruvi/.m2/repository"]]
+                 ["afk-gh" "https://maven.pkg.github.com/Technical27/afk"]]
   :java-source-paths ["java"]
   :profiles {:provided {:dependencies [[org.spigotmc/spigot-api "1.17-R0.1-SNAPSHOT" :scope "runtime"]
                                        [com.comphenix.protocol/ProtocolLib "4.7.0" :scope "runtime"]
                                        [io.github.technical27/afk "0.1.0-SNAPSHOT" :scope "runtime"]]}
-             :uberjar {}})
+             :uberjar {:jvm-opts ["-Dclojure.compiler.direct-linking=true"]}})
 
 ;:jvm-opts ["-Dclojure.compiler.direct-linking=true"]
