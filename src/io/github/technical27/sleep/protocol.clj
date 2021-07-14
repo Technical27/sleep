@@ -3,6 +3,7 @@
   (:import [org.bukkit Bukkit]))
 
 (def sleep-messages
+  "list of Minecraft translation keys that contain sleep messages"
   ["sleep.not_possible"
    "sleep.skipping_night"
    "sleep.players_sleeping"])

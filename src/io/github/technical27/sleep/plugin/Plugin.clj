@@ -12,6 +12,8 @@
   (let [plugin-manager (.getPluginManager (.getServer this))]
     (.registerEvents plugin-manager (Listener.) this)
     (reset! state/plugin this)
+    (when (.getPlugin plugin-manager "afk")
+      (.registerEvents plugin-manager (io.github.technical27.sleep.listener.AFKListener.) this))
     (when-let [adapter (protocol/adapter this)]
       (.addPacketListener (com.comphenix.protocol.ProtocolLibrary/getProtocolManager) adapter))
     (reset! state/afk-plugin (.getPlugin plugin-manager "afk"))))

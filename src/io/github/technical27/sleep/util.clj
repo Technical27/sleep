@@ -1,6 +1,7 @@
 (ns io.github.technical27.sleep.util
   (:require [io.github.technical27.sleep.state :as state])
-  (:import [org.bukkit Bukkit]))
+  (:import [org.bukkit Bukkit]
+           [org.bukkit.scheduler BukkitRunnable]))
 
 (defn is-overworld?
   "checks if a world is the overworld/normal"
@@ -43,5 +44,31 @@
 
 (defn get-needed
   "gets the number of players that need to sleep"
-  [all]
-  (int (Math/ceil (/ (max all 1) 2))))
+  []
+  (int (Math/ceil (/ (max (count (filter state/get-can-sleep (keys @state/players))) 1) 2))))
+
+(defn get-sleeping
+  "gets the number of players that are sleeping"
+  []
+  (count (filter state/get-sleeping (keys @state/players))))
+
+(defn- animation-runnable
+  [world]
+  (proxy [BukkitRunnable] []
+    (run []
+      (if (is-night?)
+        (.setTime world (+ (.getTime world) 85))
+        (do
+          (reset! state/in-animation false)
+          (.cancel this))))))
+
+(defn- animation
+  []
+  (reset! state/in-animation true)
+  (.runTaskTimer (animation-runnable (get-world)) @state/plugin 0 0))
+
+(defn do-sleep
+  []
+  (when (>= (get-sleeping) (get-needed))
+    (reset! state/in-animation true)
+    (animation)))
