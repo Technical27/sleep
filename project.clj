@@ -1,6 +1,6 @@
 (defproject io.github.technical27/sleep "0.1.0-SNAPSHOT"
-  :description "FIXME: write description"
-  :url "http://example.com/FIXME"
+  :description "bukkit sleep plugin thats just cooler"
+  :url "https://github.com/Technical27/sleep"
   :license {:name "EPL-2.0 OR GPL-2.0-or-later WITH Classpath-exception-2.0"
             :url "https://www.eclipse.org/legal/epl-2.0/"}
   :dependencies [[org.clojure/clojure "1.10.1"]
@@ -15,5 +15,3 @@
                                        [com.comphenix.protocol/ProtocolLib "4.7.0" :scope "runtime"]
                                        [io.github.technical27/afk "0.1.0-SNAPSHOT" :scope "runtime"]]}
              :uberjar {:jvm-opts ["-Dclojure.compiler.direct-linking=true"]}})
-
-;:jvm-opts ["-Dclojure.compiler.direct-linking=true"]
